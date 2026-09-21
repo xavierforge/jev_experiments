@@ -1,0 +1,19 @@
+{
+  "name": "jev-chat-noir",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Chat Noir where TypeSafe's Jev model plays the cat. Demo of System One judgments, probabilities, and latency.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.127.0",
+    "@typesafe-ai/sdk": "^0.6.0",
+    "zod": "^4.6.5"
+  }
+}

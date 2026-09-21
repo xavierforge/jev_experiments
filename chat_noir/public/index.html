@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat Noir with Jev</title>
+<meta name="description" content="Taro Ito's Chat Noir where TypeSafe's Jev model places the walls. Watch each decision, its probabilities, and how long it took.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="layout">
+  <section class="game-col">
+    <div class="game">
+      <div class="game-head">
+        <span class="title">Chat Noir</span>
+        <span class="by" id="byline">TypeSafe Jev plays the fence</span>
+        <span id="health" class="health">…</span>
+      </div>
+      <div class="board-wrap">
+        <svg id="board" viewBox="0 0 100 100" role="img" aria-label="Chat Noir board">
+          <g id="cells"></g>
+          <text id="cat" class="cat" x="0" y="0">🐈‍⬛</text>
+        </svg>
+        <div id="overlay" class="overlay hidden"></div>
+      </div>
+      <div class="game-foot">
+        <span id="status">Press Step. Jev walls one cell, then the cat runs.</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="stepBtn" class="primary">Step</button>
+      <label class="check"><input type="checkbox" id="auto"> Auto play</label>
+      <button id="newGame">New game</button>
+      <label>Hints <select id="hint" title="How much the code pre-computes for the model">
+        <option value="analyzed">analyzed (BFS consequences)</option>
+        <option value="local">local (map + geometry only)</option>
+      </select></label>
+      <label>Provider <select id="provider">
+        <option value="typesafe">TypeSafe Jev</option>
+        <option value="claude">Claude API</option>
+      </select></label>
+      <label>Model <input id="model" value="jev-latest" size="16" spellcheck="false"></label>
+      <label class="check"><input type="checkbox" id="showCands" checked> Show candidates on board</label>
+    </div>
+    <div id="error" class="error hidden"></div>
+  </section>
+
+  <aside class="panels">
+    <section class="card timing">
+      <div class="timing-row">
+        <div class="stat big"><div class="stat-v" id="latModel">–</div><div class="stat-k">ms, this decision</div></div>
+        <div class="stat"><div class="stat-v" id="latMean">–</div><div class="stat-k">ms, mean</div></div>
+        <div class="stat"><div class="stat-v" id="latRange">–</div><div class="stat-k">ms, min / max</div></div>
+        <svg id="latChart" class="lat-chart" viewBox="0 0 320 80" preserveAspectRatio="none" aria-label="Model decision time per wall"></svg>
+      </div>
+      <p class="muted tiny" id="timingNote">Time the model takes to decide, measured on the server around the API call.</p>
+    </section>
+
+    <section class="card">
+      <h2><span id="decisionTitle">Jev's decision</span> <span id="turnLabel" class="muted"></span></h2>
+      <div id="decision" class="decision"><p class="muted">No wall placed yet.</p></div>
+      <h3>Outlook <span class="muted" id="outlookNote">speculative Score question in the same request</span></h3>
+      <div id="outlook" class="outlook"><p class="muted">–</p></div>
+    </section>
+
+    <section class="card">
+      <h2>History</h2>
+      <div class="table-wrap">
+        <table id="history">
+          <thead><tr><th>#</th><th>Wall</th><th>Cat</th><th>Model</th><th>P(chosen)</th><th>Conf.</th><th>ms</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <details id="rawDetails">
+        <summary><h2>Request and response</h2></summary>
+        <h3>State sent</h3>
+        <pre id="rawState" class="raw">–</pre>
+        <h3>Questions sent</h3>
+        <pre id="rawQuestions" class="raw">–</pre>
+        <h3>Answers</h3>
+        <pre id="rawAnswers" class="raw">–</pre>
+      </details>
+    </section>
+
+    <p class="foot">Game design by Taro Ito (<a href="https://www.gamedesign.jp/sp/cat/" rel="noreferrer">gamedesign.jp</a>). The cat runs the original's algorithm. Wall decisions by <a href="https://docs.typesafe.ai" rel="noreferrer">TypeSafe</a> Jev: code lists candidate walls and their consequences, the model chooses.</p>
+  </aside>
+</main>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
